@@ -7,7 +7,7 @@ class Car extends Pawn
         this.rotation = 3 * Math.PI / 2
         this.scale = Vector2D.identity()
 
-        this.maximum_speed = 500
+        this.maximum_speed = 1000
         this.maximum_angular_speed = 0.05
 
         this.drawable = this.create_drawable()   
@@ -26,7 +26,7 @@ class Car extends Pawn
             new Vector2D(width / 4, height / 2),
             new Vector2D(-width / 2, height / 2),
         ]
-        let drawable = new DrawableShape(points, "#ff1000", 2)
+        let drawable = new DrawableShape(this.location, this.rotation, this.scale, points, "#ff1000", 2)
         return drawable
     }
 
@@ -96,6 +96,7 @@ class Car extends Pawn
 
     render(canvas_rendering_context, delta_time)
     {
+        //console.log("Car pos: " + this.location.x + ", " + this.location.y)
         super.render(canvas_rendering_context, delta_time)
     }
 }

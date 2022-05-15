@@ -13,6 +13,7 @@ class GameInstance
 
         this.actors = []
         this.input_ref = new Input(canvas)
+        this.renderer = new Renderer()
         this.collision_resolver = new CollisionResolver()
         this.game_controller_type = game_controller_type
 
@@ -80,6 +81,8 @@ class GameInstance
                 element.render(this.canvas_rendering_context, delta_time)
             }
         });
+
+        this.renderer.render(this.canvas_rendering_context)
     }
 
     tick_actors(delta_time){

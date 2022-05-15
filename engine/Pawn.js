@@ -33,7 +33,11 @@ class Pawn extends Actor
     {
         if(this.drawable != null)
         {
-            this.drawable.draw(canvas_rendering_context, this.location, this.rotation, this.scale)
+            this.drawable.location = this.location
+            this.drawable.rotation = this.rotation
+            this.drawable.scale = this.scale
+            //this.drawable.render(canvas_rendering_context)
+            this.game_instance.renderer.enqueue(this.drawable)
         }
     }
 }

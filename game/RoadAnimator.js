@@ -22,7 +22,7 @@ class RoadAnimator extends Pawn
     {
         if(this.drawable != null)
         {
-            this.drawable.draw(canvas_rendering_context, this.location, this.rotation, this.scale)
+            this.drawable.render(canvas_rendering_context)
         }
     }
 

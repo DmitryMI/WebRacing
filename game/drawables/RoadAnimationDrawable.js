@@ -1,8 +1,8 @@
 class RoadStripeDrawable extends DrawableShape
 {
-    constructor(style, width, position)
+    constructor(style, width, location)
     {
-        super()
+        super(location, 0, Vector2D.identity())
         this.points = [
             new Vector2D(-10, 50),
             new Vector2D(10, 50),
@@ -11,21 +11,19 @@ class RoadStripeDrawable extends DrawableShape
         ]
         this.style = style
         this.width = width
-
-        this.position = position
     }
 
-    draw(ctx, position, rotation, scale)
+    render(ctx)
     {
-        super.draw(ctx, position, rotation, scale)
+        super.render(ctx)
     }
 }
 
 class RoadAnimationDrawable extends Drawable
 {
-    constructor(canvas)
+    constructor(canvas, sorting_priority = 0)
     {
-        super()
+        super(sorting_priority)
         this.canvas = canvas
         this.stripe_spawn_distance = 200
 
@@ -60,9 +58,9 @@ class RoadAnimationDrawable extends Drawable
         for(let i = 0; i < this.road_stripes.length; i++)
         {
             let stripe = this.road_stripes[i]            
-            stripe.position = Vector2D.addv(stripe.position, step)
+            stripe.location = Vector2D.addv(stripe.location, step)
 
-            if(stripe.position.y > this.get_road_height() + 500)
+            if(stripe.location.y > this.get_road_height() + 500)
             {
                 this.road_stripes.splice(i, 1)
                 i--
@@ -80,12 +78,12 @@ class RoadAnimationDrawable extends Drawable
         }
     }
 
-    draw(ctx, position, rotation, scale)
+    render(ctx)
     {
         for(let i = 0; i < this.road_stripes.length; i++)
         {
             let stripe = this.road_stripes[i]            
-            stripe.draw(ctx, stripe.position, 0, Vector2D.identity())
+            stripe.render(ctx)
         }
     }
 }
