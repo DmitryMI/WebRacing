@@ -7,12 +7,12 @@ class Drawable
 
     get sorting_priority()
     {
-        return this.sorting_priority
+        return this._sorting_priority
     }
 
     set sorting_priority(value)
     {
-        this.sorting_priority = value
+        this._sorting_priority = value
     }
 
     render(ctx)

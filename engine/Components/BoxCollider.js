@@ -58,7 +58,7 @@ class BoxCollider extends ActorComponent
     {
         super.tick_component(delta_seconds)      
     
-        //this.debug_utils.draw_debug_box(this.get_translated_collider(), '#0000ff', 2)
+        this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#0000ff', 2)
     }
 
     get_translated_collider()
@@ -74,7 +74,14 @@ class BoxCollider extends ActorComponent
             element(this, other_collider_component)
         });
 
-        this.debug_utils.draw_debug_box(this.get_translated_collider(), '#ff0000', 2, 2.0)
+        if(this.debug_utils == null)
+        {
+            console.log("DebugUtils is null!")
+        }
+        else
+        {
+            this.debug_utils.draw_debug_box(this.get_translated_collider(), '#ff0000', 2, 2.0)
+        }
     }
     
     on_collision_leave(other_collider_component)
@@ -83,7 +90,7 @@ class BoxCollider extends ActorComponent
             element(this, other_collider_component)
         });
 
-        this.debug_utils.draw_debug_box(this.get_translated_collider(), '#00ff00', 2, 2.0)
+        this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#00ff00', 2, 2.0)
     }
 
     on_collision_stay(other_collider_component)
@@ -92,6 +99,6 @@ class BoxCollider extends ActorComponent
             element(this, other_collider_component)
         });
 
-        this.debug_utils.draw_debug_box(this.get_translated_collider(), '#ffff00', 2, 0.02)
+        this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#ffff00', 2)
     }
 }

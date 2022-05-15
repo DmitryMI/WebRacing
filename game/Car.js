@@ -32,7 +32,7 @@ class Car extends Pawn
 
     create_collider()
     {
-        let box = new Box(-25, 0, 25, 50)
+        let box = new Box(-25, 50, 25, -50)
         let collider = new BoxCollider(box)
         return collider
     }
@@ -96,7 +96,6 @@ class Car extends Pawn
 
     render(canvas_rendering_context, delta_time)
     {
-        //console.log("Car pos: " + this.location.x + ", " + this.location.y)
         super.render(canvas_rendering_context, delta_time)
     }
 }

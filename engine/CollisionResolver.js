@@ -23,13 +23,18 @@ class CollisionResolver
 
     remove_collider(collider)
     {
-        this.collision_components.pop(collider)
+        let component_index = this.collision_components.indexOf(collider)
+        if(component_index == -1)
+        {
+            return
+        }
+        this.collision_components.splice(component_index, 1)
 
         let index = this.colliding_pair_index_of_any(collider)
 
         if(index != -1)
         {
-            pair = this.colliding_pairs[index]
+            let pair = this.colliding_pairs[index]
             if(pair.a == collider)
             {
                 pair.b.on_collision_leave(collider)
@@ -117,6 +122,7 @@ class CollisionResolver
             {
                 let other_collider = this.collision_components[j]
                 let other_box = other_collider.get_translated_collider()
+                //console.log(`First box: (${box.left}, ${box.top}, ${box.right}, ${box.bottom}), Second box:  (${other_box.left}, ${other_box.top}, ${other_box.right}, ${other_box.bottom})`)
                 if(box.intersects(other_box))
                 {
                     this.send_collision_present_events(collider, other_collider)

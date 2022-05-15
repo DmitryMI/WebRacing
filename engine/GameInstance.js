@@ -56,9 +56,13 @@ class GameInstance
 
     destroy_actor(actor)
     {
-        actor.end_play()
+        actor.end_play()        
+        let index = this.actors.indexOf(actor)
+        if(index != -1)
+        {
+            this.actors.splice(index, 1)
+        }
         actor.game_instance = null
-        this.actors.pop(actor)
     }
 
     update(){

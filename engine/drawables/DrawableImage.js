@@ -1,12 +1,15 @@
 class DrawableImage extends Drawable
 {
-    constructor(image, location, rotation, scale, sorting_priority = 0)
+    constructor(image, location, rotation, width, height, sorting_priority = 0)
     {
         super(sorting_priority)
         this.image = image
         this.location = location
         this.rotation = rotation
-        this.scale = scale
+        this.width = width
+        this.height = height
+
+        this.scale = Vector2D.identity()      
     }
 
     render(ctx)
@@ -14,9 +17,11 @@ class DrawableImage extends Drawable
         super.render(ctx)
 
         let x = this.location.x
-        let y = this.location.y
-        let xShifted = x - this.image.width / 2
-        let yShifted = y - this.image.height / 2
-        ctx.drawImage(this.image, xShifted, yShifted)
+        let y = this.location.y       
+
+        let xShifted = x - this.width / 2
+        let yShifted = y - this.height / 2        
+
+        ctx.drawImage(this.image, xShifted, yShifted, this.width, this.height)
     }
 }

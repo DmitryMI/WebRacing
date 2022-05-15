@@ -31,6 +31,11 @@ class Pawn extends Actor
 
     render(canvas_rendering_context, delta_time)
     {
+        if(this.game_instance == null)
+        {
+            return
+        }
+        
         if(this.drawable != null)
         {
             this.drawable.location = this.location
