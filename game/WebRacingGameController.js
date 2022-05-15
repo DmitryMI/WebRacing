@@ -5,10 +5,11 @@ class WebRacingGameController extends GameController
         super()
         
         this.canvas = document.getElementById("scene_canvas")
+        this.road_width_fraction = 0.8
 
         this.car = new Car(this.scene_center)
 
-        this.road_animator = new RoadAnimator(this.canvas)
+        this.road_animator = new RoadAnimator(this.canvas, this.road_width_fraction)
     }
 
     static get road_vertical_speed()
@@ -24,6 +25,17 @@ class WebRacingGameController extends GameController
     get scene_center()
     {
         return Vector2D.divf(this.scene_size, 2)
+    }
+
+    get road_size()
+    {
+        let scale = new Vector2D(this.road_width_fraction, 1)
+        return Vector2D.multv(this.scene_size, scale)
+    }
+
+    get road_center()
+    {
+        return this.scene_center
     }
 
     begin_play()
@@ -42,6 +54,18 @@ class WebRacingGameController extends GameController
     tick(delta_seconds)
     {
         super.tick(delta_seconds)
+        
+        let road_left = this.road_center.x - this.road_size.x / 2
+        let road_right = this.road_center.x + this.road_size.x / 2
+
+        if(this.car.location.x < road_left)
+        {
+            this.car.location.x = road_left
+        }
+        else if(this.car.location.x > road_right)
+        {
+            this.car.location.x = road_right
+        }
     }
 
 

@@ -1,9 +1,9 @@
 class RoadAnimator extends Pawn
 {
-    constructor(canvas)
+    constructor(canvas, road_width_fraction)
     {
         super("RoadAnimator")
-        this.drawable = new RoadAnimationDrawable(canvas)
+        this.drawable = new RoadAnimationDrawable(canvas, road_width_fraction)
     }
 
     begin_play()

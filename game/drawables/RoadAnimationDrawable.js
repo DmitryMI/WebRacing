@@ -1,33 +1,76 @@
-class RoadStripeDrawable extends DrawableShape
+class RoadStripeDrawable extends Drawable
 {
-    constructor(style, width, location)
+    constructor(style, line_width, location)
     {
-        super(location, 0, Vector2D.identity())
-        this.points = [
+        super(0)
+
+        this.location = location
+
+        this.shape_points = [
             new Vector2D(-10, 50),
             new Vector2D(10, 50),
             new Vector2D(10, -50),
             new Vector2D(-10, -50)
         ]
+
+        this.shape = new DrawableShape(this.location, 0, Vector2D.identity(), this.shape_points, "#101010", 1)        
+        
         this.style = style
-        this.width = width
+        this.width = line_width
     }
 
     render(ctx)
     {
-        super.render(ctx)
+        this.shape.location = this.location
+        this.shape.render(ctx)
+
+        ctx.fillStyle = "#EFEFEF";
+
+        let x = this.location.x - 10
+        let y = this.location.y - 50
+        let width = 20
+        let height = 100
+
+        ctx.fillRect(x, y, width, height);
+    }
+}
+
+class RoadAsphaltDrawable extends Drawable
+{
+    constructor(road_center, road_width, road_height)
+    {
+        super(0)
+
+        this.road_center = road_center
+        this.road_width = road_width
+        this.road_height = road_height
+    }
+
+    render(ctx)
+    {
+        ctx.fillStyle = "#282B2A ";
+
+        let x = this.road_center.x - this.road_width / 2
+        let y = this.road_center.y - this.road_height / 2
+        let width = this.road_width
+        let height = this.road_height
+
+        ctx.fillRect(x, y, width, height);
     }
 }
 
 class RoadAnimationDrawable extends Drawable
 {
-    constructor(canvas, sorting_priority = 0)
+    constructor(canvas, road_width_fraction, sorting_priority = 0)
     {
         super(sorting_priority)
         this.canvas = canvas
-        this.stripe_spawn_distance = 200
+        this.road_width_fraction = road_width_fraction
+
+        this.stripe_spawn_distance = 200        
 
         this.road_stripes = []
+        this.road_asphalt = new RoadAsphaltDrawable(this.get_road_center(), this.get_road_width(), this.get_road_height())
 
         this.next_stripe_time = 0
         this.previous_road_width = this.get_road_width()
@@ -36,7 +79,7 @@ class RoadAnimationDrawable extends Drawable
 
     get_road_width()
     {
-        return this.canvas.clientWidth
+        return this.canvas.clientWidth * this.road_width_fraction
     }
 
     get_road_height()
@@ -44,9 +87,14 @@ class RoadAnimationDrawable extends Drawable
         return this.canvas.clientHeight
     }
 
+    get_road_center()
+    {
+        return new Vector2D(this.canvas.clientWidth / 2, this.canvas.clientHeight / 2)
+    }
+
     spawn_stripe()
     {
-        let pos = new Vector2D(this.get_road_width() / 2, -500)
+        let pos = new Vector2D(this.get_road_center().x, -500)
         let stripe = new RoadStripeDrawable("#000000", 3, pos)
         this.road_stripes.push(stripe)
     }
@@ -76,14 +124,19 @@ class RoadAnimationDrawable extends Drawable
         {
             this.next_stripe_time -= delta_seconds
         }
+
+        this.road_asphalt.road_center = this.get_road_center()
+        this.road_asphalt.road_width = this.get_road_width()
+        this.road_asphalt.road_height = this.get_road_height()
     }
 
     render(ctx)
     {
+        this.road_asphalt.render(ctx)
         for(let i = 0; i < this.road_stripes.length; i++)
         {
             let stripe = this.road_stripes[i]            
             stripe.render(ctx)
-        }
+        }        
     }
 }
