@@ -58,7 +58,7 @@ class BoxCollider extends ActorComponent
     {
         super.tick_component(delta_seconds)      
     
-        this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#0000ff', 2)
+        //this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#0000ff', 2)
     }
 
     get_translated_collider()
@@ -80,7 +80,7 @@ class BoxCollider extends ActorComponent
         }
         else
         {
-            this.debug_utils.draw_debug_box(this.get_translated_collider(), '#ff0000', 2, 2.0)
+            this.debug_utils.draw_debug_box(this.get_translated_collider(), '#ff0000', 2, 0.5)
         }
     }
     
@@ -90,7 +90,7 @@ class BoxCollider extends ActorComponent
             element(this, other_collider_component)
         });
 
-        this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#00ff00', 2, 2.0)
+        this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#00ff00', 2, 0.5)
     }
 
     on_collision_stay(other_collider_component)

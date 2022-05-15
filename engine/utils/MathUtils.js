@@ -1,4 +1,4 @@
-function get_shortest_rotation(current, target)
+function get_shortest_angle(current, target)
 {
     let a = target - current
     let b = target - current + Math.PI * 2
@@ -10,20 +10,25 @@ function get_shortest_rotation(current, target)
 
     if(abs_a <= abs_b && abs_a <= abs_c)
     {
-        return Math.sign(a)
+        return a
     }
     
     if(abs_b <= abs_a && abs_b <= abs_c)
     {
-        return Math.sign(b)
+        return b
     }
 
     if(abs_c <= abs_a && abs_c <= abs_b)
     {
-        return Math.sign(c)
+        return c
     }
 
     return 0
+}
+
+function get_shortest_rotation(current, target)
+{
+    return Math.sign(get_shortest_angle(current, target))
 }
 
 function unwind_angle(angle)

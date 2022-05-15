@@ -7,7 +7,7 @@ class Car extends Pawn
         this.rotation = 3 * Math.PI / 2
         this.scale = Vector2D.identity()
 
-        this.maximum_speed = 1000
+        this.maximum_speed = 800
         this.maximum_angular_speed = 0.05
 
         this.drawable = this.create_drawable()   
@@ -50,13 +50,12 @@ class Car extends Pawn
         let direction_car_mouse_length = car_mouse.length
         let direction_car_mouse = Vector2D.divf(car_mouse, direction_car_mouse_length)
         
-        let target_rotation = 0
-
-        target_rotation = car_target.rotation_angle
+        let target_rotation = 0      
 
         if(direction_car_mouse_length > 0.01)
-        {
-                       
+        {                   
+            target_rotation = unwind_angle(car_target.rotation_angle)
+
             let step = this.maximum_speed * delta_seconds
             if (step > direction_car_mouse_length)
             {
@@ -66,19 +65,27 @@ class Car extends Pawn
             let translation = Vector2D.multf(direction_car_mouse, step)
             this.location = Vector2D.addv(this.location, translation)
         }  
-        
-        let rotation_delta = this.rotation - target_rotation
-        let rotation_delta_abs = Math.abs(rotation_delta)
-        if(rotation_delta_abs > 0.01)
+        else
         {
-            let rotation_direction = get_shortest_rotation(this.rotation, target_rotation)
+            target_rotation = 3 * Math.PI / 2
+        }
+        
+        let rotation_delta = get_shortest_angle(this.rotation, target_rotation)
+        let rotation_delta_abs = Math.abs(rotation_delta)
+        if(rotation_delta_abs > 0.001)
+        {
+            let rotation_direction = Math.sign(rotation_delta)
             let rotation_step = rotation_direction * this.maximum_angular_speed
             if(Math.abs(rotation_step) > rotation_delta_abs)
             {
                 rotation_step = rotation_delta
             }
             this.rotation += rotation_step
-        }      
+        }
+        else
+        {
+            this.rotation = target_rotation
+        }
 
     }
 

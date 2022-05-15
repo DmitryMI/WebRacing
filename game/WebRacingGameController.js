@@ -21,7 +21,7 @@ class WebRacingGameController extends GameController
 
     static get obstacle_spawn_chance_slope()
     {
-        return 0.05
+        return 0.01
     }
 
     static get_obstacle_spawn_change(time)
@@ -34,7 +34,7 @@ class WebRacingGameController extends GameController
 
     static get road_vertical_speed()
     {
-        return 1000
+        return 600
     }
 
     get scene_size()
@@ -119,7 +119,7 @@ class WebRacingGameController extends GameController
         }
 
         let chance_base = WebRacingGameController.get_obstacle_spawn_change(this.play_time)
-        //console.log(chance_base)
+        console.log(chance_base)
         let obstacle_spawn_chance = chance_base * delta_seconds
         let will_spawn = random_bool_weighted(obstacle_spawn_chance)
         if(will_spawn)
