@@ -11,9 +11,19 @@ class Vector2D
         return this.x * this.x + this.y * this.y
     }
 
+    get length_sqr()
+    {
+        return this.size_sqr
+    }
+
     get size()
     {
         return Math.sqrt(this.size_sqr)
+    }
+
+    get length()
+    {
+        return this.size
     }
 
     get rotation_angle()

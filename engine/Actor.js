@@ -37,6 +37,16 @@ class Actor
         return this.game_instance.collision_resolver
     }
 
+    get game_controller()
+    {
+        if(this.game_instance == null)
+        {
+            return null
+        }
+
+        return this.game_instance.game_controller
+    }
+
     add_component(component)
     {
         component.attach(this)

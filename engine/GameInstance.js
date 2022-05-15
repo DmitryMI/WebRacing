@@ -2,7 +2,7 @@
 // GameInstance manages lifecycle of the game: initialization of scene, ticking, etc.
 class GameInstance
 {
-    constructor(frame_delta_time, canvas)
+    constructor(frame_delta_time, canvas, game_controller_type)
     {
         this.timer_interval = frame_delta_time
         this.time = 0
@@ -14,11 +14,12 @@ class GameInstance
         this.actors = []
         this.input_ref = new Input(canvas)
         this.collision_resolver = new CollisionResolver()
+        this.game_controller_type = game_controller_type
+
+        this.game_controller = new game_controller_type("GameController")
+        this.spawn(this.game_controller)
 
         this.timer_id = null
-
-        // Player Stats
-        this.score = 0
     }
 
     get input()

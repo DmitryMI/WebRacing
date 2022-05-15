@@ -16,7 +16,15 @@ class DrawableShape extends Drawable
             let translated_point = Vector2D.addv(this.points[i], position)
             translated_points.push(translated_point)
         }
+        
+        ctx.translate(position.x, position.y)
+        ctx.rotate(rotation)
+        ctx.translate(-position.x, -position.y)
 
         draw_shape(ctx, translated_points, this.style, this.width)
+        
+        ctx.translate(position.x, position.y)
+        ctx.rotate(-rotation)
+        ctx.translate(-position.x, -position.y)
     }
 }

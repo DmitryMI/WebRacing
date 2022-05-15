@@ -4,9 +4,19 @@ class Pawn extends Actor
     {
         super(name)
         this.location = location        
-        this.rotation = rotation
+        this._rotation = rotation
         this.scale = scale
         this.drawable = drawable
+    }
+
+    get rotation()
+    {
+        return this._rotation
+    }
+
+    set rotation(value)
+    {
+        this._rotation = unwind_angle(value)
     }
 
     begin_play()
@@ -23,7 +33,7 @@ class Pawn extends Actor
     {
         if(this.drawable != null)
         {
-            this.drawable.draw(canvas_rendering_context, this.location, this.location, this.rotation, this.scale)
+            this.drawable.draw(canvas_rendering_context, this.location, this.rotation, this.scale)
         }
     }
 }
