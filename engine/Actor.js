@@ -17,18 +17,38 @@ class Actor
         return this.game_instance_ref
     }
 
+    get debug_utils()
+    {
+        if(this.game_instance == null)
+        {
+            return null
+        }
+
+        return this.game_instance.debug_utils
+    }
+
+    get collision_resolver()
+    {
+        if(this.game_instance == null)
+        {
+            return null
+        }
+
+        return this.game_instance.collision_resolver
+    }
+
     add_component(component)
     {
-        component.parent = this
+        component.attach(this)
         this.components.push(component)
     }
 
     remove_component(component)
-    {
-        component.parent = null
+    {        
         let index = this.components.indexOf(component)
         if(index != -1)
         {
+            component.detach()
             this.components.splice(index, 1)
         }
     }
@@ -58,17 +78,23 @@ class Actor
 
     begin_play()
     {
-
+        this.components.forEach(element => {
+            element.begin_play()
+        });
     }
 
     end_play()
     {
-
+        this.components.forEach(element => {
+            element.end_play()
+        });
     }
 
     tick(delta_seconds)
     {
-
+        this.components.forEach(element => {
+            element.tick_component(delta_seconds)
+        });
     }
 
     destroy()

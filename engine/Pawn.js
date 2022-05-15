@@ -21,9 +21,9 @@ class Pawn extends Actor
 
     render(canvas_rendering_context, delta_time)
     {
-        this.drawable.draw(canvas_rendering_context, this.location.x, this.location.y)
-        //let x = this.location.x - this.image.width / 2
-        //let y = this.location.y - this.image.height / 2
-        //canvas_rendering_context.drawImage(this.image, x, y)
+        if(this.drawable != null)
+        {
+            this.drawable.draw(canvas_rendering_context, this.location, this.location, this.rotation, this.scale)
+        }
     }
 }

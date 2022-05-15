@@ -156,6 +156,13 @@ class Vector2D
         return new Vector2D(x, y)
     }
 
+    static random_box(left, top, right, bottom)
+    {
+        let x = random_range(left, right)
+        let y = random_range(bottom, top)
+        return new Vector2D(x, y)
+    }
+
     static random_unit_circle()
     {
        let unit = new Vector2D(1, 0)

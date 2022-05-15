@@ -5,7 +5,7 @@ class Drawable
 
     }
 
-    draw(ctx, x, y)
+    draw(ctx, position, rotation, scale)
     {
 
     }

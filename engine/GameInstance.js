@@ -9,11 +9,16 @@ class GameInstance
         this.delta_time = frame_delta_time
         this.canvas = canvas
         this.canvas_rendering_context = canvas.getContext('2d');
+        this.debug_utils = new DebugUtils(this.canvas_rendering_context)
 
         this.actors = []
         this.input_ref = new Input(canvas)
+        this.collision_resolver = new CollisionResolver()
 
         this.timer_id = null
+
+        // Player Stats
+        this.score = 0
     }
 
     get input()
@@ -60,8 +65,10 @@ class GameInstance
 
     game_loop(delta_time){
         this.input_ref.update(delta_time)
-        this.tick_actors(delta_time)
+        this.collision_resolver.resolve_collisions()
         this.render_pawns(delta_time)
+        this.debug_utils.update(delta_time)
+        this.tick_actors(delta_time)        
     }
 
     render_pawns(delta_time){

@@ -15,6 +15,8 @@ class BoucingPawn extends Pawn
     
     tick(delta_seconds)
     {
+        super.tick(delta_seconds)
+        
         let step = Vector2D.multf(this.velocity, delta_seconds)
         this.location = Vector2D.addv(this.location, step)
 
