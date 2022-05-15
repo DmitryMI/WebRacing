@@ -8,7 +8,12 @@ class WebRacingGameController extends GameController
 
         this.car = new Car(this.scene_center)
 
-        
+        this.road_animator = new RoadAnimator(this.canvas)
+    }
+
+    static get road_vertical_speed()
+    {
+        return 1000
     }
 
     get scene_size()
@@ -25,6 +30,7 @@ class WebRacingGameController extends GameController
     {
         super.begin_play()
 
+        this.game_instance.spawn(this.road_animator)
         this.game_instance.spawn(this.car)
     }
 
