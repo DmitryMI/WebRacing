@@ -46,3 +46,8 @@ function unwind_angle(angle)
 
     return angle
 }
+
+function lerp(a, b, alpha)
+{
+    return a + (b - a) * alpha
+}

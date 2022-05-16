@@ -53,9 +53,9 @@ class DebugUtils
         }
     }
 
-    draw_debug_line(from, to, style, width)
+    draw_debug_line(from, to, style, width, persistance_seconds=-1)
     {
-        points = [from, to]
+        let points = [from, to]
         this.draw_debug_shape(points, style, width, persistance_seconds)
     }
 

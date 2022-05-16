@@ -9,13 +9,13 @@ class Obstacle extends Pawn
         this.velocity = velocity
         this.life_box = life_box
 
-        this.drawable = Obstacle.get_drawable()   
+        this.drawable = this.get_drawable()   
         this.add_component(this.create_collider())
     }
 
     static image_instance = null
 
-    static get_drawable()
+    get_drawable()
     {
         if (Obstacle.image_instance == null)
         {

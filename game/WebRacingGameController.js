@@ -5,6 +5,7 @@ class WebRacingGameController extends GameController
         super()
         
         this.canvas = document.getElementById("scene_canvas")
+        this.score_element = document.getElementById("score")
         this.road_width_fraction = 0.8
         this.play_time = 0
 
@@ -24,7 +25,7 @@ class WebRacingGameController extends GameController
         return 0.01
     }
 
-    static get_obstacle_spawn_change(time)
+    static get_obstacle_spawn_chance(time)
     {
         let max = WebRacingGameController.obstacle_spawn_chance_maximum
         let slope = WebRacingGameController.obstacle_spawn_chance_slope
@@ -67,6 +68,12 @@ class WebRacingGameController extends GameController
         let max_y = this.road_size.y + 500
 
         return new Box(min_x, max_y, max_x, min_y)
+    }
+
+    update_score()
+    {
+        let score = Math.floor(this.play_time * 10)
+        this.score_element.innerHTML = score
     }
 
     begin_play()
@@ -118,15 +125,24 @@ class WebRacingGameController extends GameController
             this.car.location.x = road_right
         }
 
-        let chance_base = WebRacingGameController.get_obstacle_spawn_change(this.play_time)
-        console.log(chance_base)
+        let chance_base = WebRacingGameController.get_obstacle_spawn_chance(this.play_time)
+        //console.log(chance_base)
         let obstacle_spawn_chance = chance_base * delta_seconds
         let will_spawn = random_bool_weighted(obstacle_spawn_chance)
         if(will_spawn)
         {
             this.spawn_obstacle()
         }
+
+        this.update_score()
     }
 
+    report_car_collision(other_collider)
+    {
+        console.log("Collision with " + other_collider.parent.name)
+
+        // TODO Game Over
+        //this.game_instance.stop_tick()
+    }
 
 }

@@ -8,8 +8,19 @@ class DrawableImage extends Drawable
         this.rotation = rotation
         this.width = width
         this.height = height
+        this._alpha = 1
 
         this.scale = Vector2D.identity()      
+    }
+
+    get alpha()
+    {
+        return this._alpha
+    }
+
+    set alpha(value)
+    {
+        this._alpha = value
     }
 
     render(ctx)
@@ -17,11 +28,24 @@ class DrawableImage extends Drawable
         super.render(ctx)
 
         let x = this.location.x
-        let y = this.location.y       
+        let y = this.location.y     
+        
+        let width = this.width * this.scale.x
+        let height = this.height * this.scale.y
 
-        let xShifted = x - this.width / 2
-        let yShifted = y - this.height / 2        
+        let xShifted = x - width / 2
+        let yShifted = y - height / 2      
+        
+        ctx.translate(this.location.x, this.location.y)
+        ctx.rotate(this.rotation)
+        ctx.translate(-this.location.x, -this.location.y)
 
-        ctx.drawImage(this.image, xShifted, yShifted, this.width, this.height)
+        ctx.globalAlpha = this.alpha;       
+        ctx.drawImage(this.image, xShifted, yShifted, width, height)
+        ctx.globalAlpha = 1.0;
+        
+        ctx.translate(this.location.x, this.location.y)
+        ctx.rotate(-this.rotation)
+        ctx.translate(-this.location.x, -this.location.y)        
     }
 }

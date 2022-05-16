@@ -109,8 +109,8 @@ class Vector2D
     {
         let cos = Math.cos(angle_rad)
         let sin = Math.sin(angle_rad)
-        let x = cos * this.x - sin * this.y
-        let y = sin * this.x + cos * this.y
+        let x = this.x * cos - this.y * sin
+        let y = this.x * sin + this.y * cos
 
         this.x = x
         this.y = y
@@ -122,11 +122,11 @@ class Vector2D
         let y = this.y - point.y
         let cos = Math.cos(angle_rad)
         let sin = Math.sin(angle_rad)
-        x = cos * x - sin * y
-        y = sin * x + cos * y
+        let nx = cos * x - sin * y
+        let ny = sin * x + cos * y
 
-        this.x = x
-        this.y = y
+        this.x = nx + point.x
+        this.y = ny + point.y
     }    
 
     static angle_between_vectors(a, b)

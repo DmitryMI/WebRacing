@@ -11,10 +11,30 @@ class Car extends Pawn
         this.maximum_angular_speed = 0.05
 
         this.drawable = this.create_drawable()   
-        this.add_component(this.create_collider())
+        this.collider = this.create_collider()
+        this.collider.add_collision_enter_event_handler((other_collider)=>this.on_collision_enter(other_collider))
+        this.add_component(this.collider)
+
+        this.smoke_spawn_period = 0.01
+
+        this.next_smoke_particle_time = this.smoke_spawn_period
     }
 
+    static image_instance = null
+
     create_drawable()
+    {
+        if (Car.image_instance == null)
+        {
+            Car.image_instance = new Image()
+            Car.image_instance.src = 'images/Car.png';            
+        }
+
+        let drawable = new DrawableImage(Car.image_instance, this.location, this.rotation, 100, 50, 20)
+        return drawable
+    }
+
+    create_drawable_debug()
     {
         let width = 100
         let height = 50
@@ -42,9 +62,19 @@ class Car extends Pawn
         let input = this.game_instance.input
         let mouse_pos = input.mouse_position
 
-        let face_target = new Vector2D(mouse_pos.x, 0)
+        let x_diff = mouse_pos.x - this.location.x
+        let y_diff = mouse_pos.y - this.location.y
 
-        let car_target = Vector2D.subv(face_target, this.location)
+        let mouse_direction = new Vector2D(x_diff, y_diff)
+        mouse_direction.normalize()
+
+        let face_target_x = mouse_direction.x * this.maximum_speed
+        let face_target_y = mouse_direction.y * this.maximum_speed - WebRacingGameController.road_vertical_speed
+       
+        //let face_target_x = this.location.x
+        let face_target = new Vector2D(face_target_x, face_target_y)
+
+        //this.debug_utils.draw_debug_line(this.location, Vector2D.addv(this.location, face_target), "#ff0000", 2)
 
         let car_mouse = Vector2D.subv(mouse_pos, this.location)
         let direction_car_mouse_length = car_mouse.length
@@ -54,7 +84,7 @@ class Car extends Pawn
 
         if(direction_car_mouse_length > 0.01)
         {                   
-            target_rotation = unwind_angle(car_target.rotation_angle)
+            target_rotation = unwind_angle(face_target.rotation_angle)
 
             let step = this.maximum_speed * delta_seconds
             if (step > direction_car_mouse_length)
@@ -91,7 +121,41 @@ class Car extends Pawn
 
     begin_play()
     {
-        super.begin_play()
+        super.begin_play()        
+    }
+
+    on_collision_enter(other_collider)
+    {       
+        this.game_instance.game_controller.report_car_collision(other_collider)
+    }
+
+    spawn_smoke_at(spawn_offset)
+    {
+        let rotation_speed = random_range(-2, 2)
+
+        let spawn_location = Vector2D.addv(this.location, spawn_offset)
+        let x_speed = random_range(-20, 20)
+        let particle_speed = new Vector2D(x_speed, WebRacingGameController.road_vertical_speed)
+        let particle = new SmokeParticle(spawn_location, particle_speed, rotation_speed, 0.3)
+        this.game_instance.spawn(particle)
+    }
+
+    spawn_smoke()
+    {       
+        // Right Smoke
+        let right_x_spawn = random_range(-80, -50)
+        let right_y_spawn = random_range(5, 10)
+        let right_spawn_offset = new Vector2D(right_x_spawn, right_y_spawn)
+        right_spawn_offset.rotate(this.rotation)
+
+        // Left Smoke
+        let left_x_spawn = random_range(-80, -50)
+        let left_y_spawn = random_range(-10, -5)
+        let left_spawn_offset = new Vector2D(left_x_spawn, left_y_spawn)
+        left_spawn_offset.rotate(this.rotation)
+
+        this.spawn_smoke_at(left_spawn_offset)
+        this.spawn_smoke_at(right_spawn_offset)       
     }
 
     tick(delta_seconds)
@@ -99,6 +163,16 @@ class Car extends Pawn
         super.tick(delta_seconds)
 
         this.follow_mouse(delta_seconds)
+
+        if(this.next_smoke_particle_time <= 0)
+        {
+            this.spawn_smoke()
+            this.next_smoke_particle_time = this.smoke_spawn_period
+        }
+        else
+        {
+            this.next_smoke_particle_time -= delta_seconds
+        }        
     }
 
     render(canvas_rendering_context, delta_time)
