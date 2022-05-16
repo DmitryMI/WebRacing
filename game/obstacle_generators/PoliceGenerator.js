@@ -45,7 +45,7 @@ class PoliceGenerator extends ObstacleGenerator
         // No division by 2 is intentional! Police cars should spawn off-screen
         let random_unit_vector = Vector2D.random_unit_circle()        
         let location = Vector2D.multv(random_unit_vector, this.game_controller.road_size)
-        location = Vector2D.multf(location, 2)
+        location = Vector2D.multf(location, 1.5)
         let velocity = new Vector2D(0, 0)
 
         this.spawn_obstacle("Police", location, velocity)
