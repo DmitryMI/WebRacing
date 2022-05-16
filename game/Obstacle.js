@@ -13,6 +13,8 @@ class Obstacle extends Pawn
         this.add_component(this.create_collider())
     }
 
+    static collision_width = 50
+
     static image_instance = null
 
     get_drawable()

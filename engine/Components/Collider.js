@@ -7,6 +7,8 @@ class Collider extends ActorComponent
         this.collision_enter_event_handlers = []
         this.collision_leave_event_handlers = []
         this.collision_stay_event_handlers = []
+
+        this.collider_debug_drawing = true
     }
 
     add_collision_stay_event_handler(handler)
@@ -61,8 +63,11 @@ class Collider extends ActorComponent
     tick_component(delta_seconds)
     {
         super.tick_component(delta_seconds)      
-    
-        this.draw_collider_shape('#0000ff', 2, -1)
+        
+        if(this.collider_debug_drawing)
+        {
+            this.draw_collider_shape('#0000ff', 2, -1)
+        }
     }    
 
     on_collision_enter(other_collider_component)
@@ -71,7 +76,10 @@ class Collider extends ActorComponent
             element(other_collider_component)
         });
         
-        this.draw_collider_shape('#ff0000', 2, 0.5)
+        if(this.collider_debug_drawing)
+        {
+            this.draw_collider_shape('#ff0000', 2, 0.5)
+        }
     }
     
     on_collision_leave(other_collider_component)
@@ -80,7 +88,10 @@ class Collider extends ActorComponent
             element(this, other_collider_component)
         });
 
-        this.draw_collider_shape('#00ff00', 2, 0.5)        
+        if(this.collider_debug_drawing)
+        {
+            this.draw_collider_shape('#00ff00', 2, 0.5)
+        }
     }
 
     on_collision_stay(other_collider_component)
@@ -88,7 +99,10 @@ class Collider extends ActorComponent
         this.collision_stay_event_handlers.forEach(element => {
             element(this, other_collider_component)
         });
-
-        this.draw_collider_shape('#ffff00', 2, -1)  
+        
+        if(this.collider_debug_drawing)
+        {
+            this.draw_collider_shape('#ffff00', 2, -1) 
+        }
     }
 }

@@ -13,25 +13,15 @@ class WebRacingGameController extends GameController
 
         this.car = new Car(this.scene_center)
         this.road_animator = new RoadAnimator(this.canvas, this.road_width_fraction)
-    }
 
-    static get obstacle_spawn_chance_maximum()
-    {
-        return 10
-    }
+        this.obstacle_generators = [
+            new RandomObstacleGenerator(Obstacle, this, 0),
+            new NarrowPassageGenerator(Obstacle, this, 0),
+            new ZigZackGenerator(Obstacle, this, 0)
+        ]
 
-    static get obstacle_spawn_chance_slope()
-    {
-        return 0.01
-    }
-
-    static get_obstacle_spawn_chance(time)
-    {
-        let max = WebRacingGameController.obstacle_spawn_chance_maximum
-        let slope = WebRacingGameController.obstacle_spawn_chance_slope
-        let chance = max * (1 - Math.pow(Math.E, -slope * time))
-        return chance
-    }
+        this.current_obstacle_generator = null
+    }    
 
     static get road_vertical_speed()
     {
@@ -87,24 +77,19 @@ class WebRacingGameController extends GameController
     end_play()
     {
         super.end_play()
-    }
+    }    
 
-    spawn_obstacle()
+    update_obstacle_generators(delta_seconds)
     {
-        //if(this.obstacle_counter == 0)
+        if(this.current_obstacle_generator == null || this.current_obstacle_generator.is_exhausted())
         {
-            let min_x = this.road_center.x - this.road_size.x / 2
-            let max_x = this.road_center.x + this.road_size.x / 2
-            let rand_x = random_range(min_x, max_x)
-            let y = -100
-            let location = new Vector2D(rand_x, y)
-            let y_speed =  WebRacingGameController.road_vertical_speed
-            //let y_speed = 100
-            let obstacle = new Obstacle("Obstacle" + this.obstacle_counter, location, new Vector2D(0, y_speed), this.obstacle_lifebox)
-            this.game_instance.spawn(obstacle)
+            this.current_obstacle_generator = random_item(this.obstacle_generators)
+            this.current_obstacle_generator.duration = random_range(5, 20)
 
-            this.obstacle_counter++
+            console.log(`Obstacle Generator ${this.current_obstacle_generator.generator_name} spawned for ${this.current_obstacle_generator.duration} seconds`)
         }
+
+        this.current_obstacle_generator.update(this.play_time, delta_seconds)
     }
 
     tick(delta_seconds)
@@ -125,14 +110,7 @@ class WebRacingGameController extends GameController
             this.car.location.x = road_right
         }
 
-        let chance_base = WebRacingGameController.get_obstacle_spawn_chance(this.play_time)
-        //console.log(chance_base)
-        let obstacle_spawn_chance = chance_base * delta_seconds
-        let will_spawn = random_bool_weighted(obstacle_spawn_chance)
-        if(will_spawn)
-        {
-            this.spawn_obstacle()
-        }
+        this.update_obstacle_generators(delta_seconds)
 
         this.update_score()
     }
