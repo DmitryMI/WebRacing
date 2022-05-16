@@ -1,64 +1,9 @@
-class BoxCollider extends ActorComponent
+class BoxCollider extends Collider
 {
     constructor(box)
     {
         super()
-        this.box = box
-
-        this.collision_enter_event_handlers = []
-        this.collision_leave_event_handlers = []
-        this.collision_stay_event_handlers = []
-    }
-
-    add_collision_stay_event_handler(handler)
-    {
-        this.collision_stay_event_handlers.push(handler)
-    }
-
-    remove_collision_stay_event_handle(handler)
-    {
-        this.collision_stay_event_handlers.pop(handler)
-    }
-
-    add_collision_enter_event_handler(handler)
-    {
-        this.collision_enter_event_handlers.push(handler)
-    }
-
-    remove_collision_enter_event_handler(handler)
-    {
-        this.collision_leave_event_handlers.pop(handler)
-    }
-
-    add_collision_leave_event_handler(handler)
-    {
-        this.collision_enter_event_handlers.push(handler)
-    }
-
-    remove_collision_leave_event_handler(handler)
-    {
-        this.collision_leave_event_handlers.pop(handler)
-    }
-
-    begin_play()
-    {
-        super.begin_play()
-
-        this.collision_resolver.add_collider(this)
-    }
-
-    end_play()
-    {
-        super.end_play()        
-
-        this.collision_resolver.remove_collider(this)
-    }
-
-    tick_component(delta_seconds)
-    {
-        super.tick_component(delta_seconds)      
-    
-        //this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#0000ff', 2)
+        this.box = box       
     }
 
     get_translated_collider()
@@ -68,37 +13,26 @@ class BoxCollider extends ActorComponent
         return translated_box
     }
 
-    on_collision_enter(other_collider_component)
+    draw_collider_shape(style, width, duration)
     {
-        this.collision_enter_event_handlers.forEach(element => {
-            element(other_collider_component)
-        });
+        super.draw_collider_shape(style, width, duration)
 
-        if(this.debug_utils == null)
-        {
-            console.log("DebugUtils is null!")
-        }
-        else
-        {
-            //this.debug_utils.draw_debug_box(this.get_translated_collider(), '#ff0000', 2, 0.5)
-        }
-    }
-    
-    on_collision_leave(other_collider_component)
-    {
-        this.collision_leave_event_handlers.forEach(element => {
-            element(this, other_collider_component)
-        });
-
-        //this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#00ff00', 2, 0.5)
+        this.debug_utils?.draw_debug_box(this.get_translated_collider(), style, width, duration)
     }
 
-    on_collision_stay(other_collider_component)
+    check_collision(other_collider)
     {
-        this.collision_stay_event_handlers.forEach(element => {
-            element(this, other_collider_component)
-        });
-
-        //this.debug_utils?.draw_debug_box(this.get_translated_collider(), '#ffff00', 2)
+        if(other_collider instanceof BoxCollider)
+        {
+            let my_box = this.get_translated_collider()
+            let other_box = other_collider.get_translated_collider()
+            return my_box.intersects(other_box)
+        }
+        else if(other_collider instanceof CircleCollider)
+        {
+            let my_box = this.get_translated_collider()
+            let other_circle = other_collider.get_translated_collider()
+            return other_circle.intersects_box(my_box)
+        }
     }
 }

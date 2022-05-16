@@ -8,16 +8,26 @@ class Box
         this.bottom = bottom
     }
 
-    intersects(box)
+    intersects(shape)
     {
-        let lgr = box.left >= this.right;
-	    let rll = box.right <= this.left;
-	    let tgb = box.top <= this.bottom;
-	    let blt = box.bottom >= this.top;
+        if(shape instanceof Box)
+        {
+            let box = shape
+            let lgr = box.left >= this.right;
+            let rll = box.right <= this.left;
+            let tgb = box.top <= this.bottom;
+            let blt = box.bottom >= this.top;
 
-	    let tmp = (lgr || rll || tgb || blt);
-	    return !tmp;
-    }
+            let tmp = (lgr || rll || tgb || blt);
+            return !tmp;
+        }
+        else if (shape instanceof Circle)
+        {
+            return shape.intersects_box(this)
+        }
+
+        return false
+    }    
 
     contains_point(point)
     {

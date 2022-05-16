@@ -11,7 +11,7 @@ class Car extends Pawn
         this.maximum_angular_speed = 0.05
 
         this.drawable = this.create_drawable()   
-        this.collider = this.create_collider()
+        this.collider = this.create_collider_circle()
         this.collider.add_collision_enter_event_handler((other_collider)=>this.on_collision_enter(other_collider))
         this.add_component(this.collider)
 
@@ -54,6 +54,13 @@ class Car extends Pawn
     {
         let box = new Box(-25, 50, 25, -50)
         let collider = new BoxCollider(box)
+        return collider
+    }
+
+    create_collider_circle()
+    {
+        let circle = new Circle(Vector2D.zero(), 25)
+        let collider = new CircleCollider(circle)
         return collider
     }
 

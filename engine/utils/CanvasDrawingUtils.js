@@ -17,3 +17,15 @@ function draw_shape(ctx, points, style, width)
     ctx.strokeStyle = style;
     ctx.stroke(); 
 }
+
+function draw_circle(ctx, center, radius, style, width)
+{
+    ctx.beginPath();
+    
+    ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
+
+    ctx.lineWidth = width;
+    ctx.strokeStyle = style;
+
+    ctx.stroke(); 
+}

@@ -117,13 +117,10 @@ class CollisionResolver
         for(let i = 0; i < num; i++)
         {
             let collider = this.collision_components[i]
-            let box = collider.get_translated_collider()
             for(let j = i + 1; j < num; j++)
             {
                 let other_collider = this.collision_components[j]
-                let other_box = other_collider.get_translated_collider()
-                //console.log(`First box: (${box.left}, ${box.top}, ${box.right}, ${box.bottom}), Second box:  (${other_box.left}, ${other_box.top}, ${other_box.right}, ${other_box.bottom})`)
-                if(box.intersects(other_box))
+                if(collider.check_collision(other_collider))
                 {
                     this.send_collision_present_events(collider, other_collider)
                 }

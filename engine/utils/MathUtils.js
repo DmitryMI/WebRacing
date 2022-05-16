@@ -51,3 +51,18 @@ function lerp(a, b, alpha)
 {
     return a + (b - a) * alpha
 }
+
+function clamp(x, min, max)
+{
+    if(x > max)
+    {
+        return max
+    }
+
+    if(x < min)
+    {
+        return min
+    }
+
+    return x
+}

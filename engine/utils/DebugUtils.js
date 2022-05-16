@@ -9,6 +9,18 @@ class PersistentDebugShape
     }
 }
 
+class PersistentDebugCircle
+{
+    constructor(center, radius, style, width, seconds)
+    {
+        this.center = center
+        this.radius = radius
+        this.style = style
+        this.width = width
+        this.seconds_left = seconds
+    }
+}
+
 class DebugUtils
 {
     static instance = null
@@ -18,6 +30,7 @@ class DebugUtils
         this.ctx = ctx
 
         this.persistent_shapes = []
+        this.persistent_circles = []
     }    
 
     update(delta_seconds)
@@ -33,6 +46,21 @@ class DebugUtils
             if(shape.seconds_left <= 0)
             {
                 this.persistent_shapes.splice(i, 1)
+                i--
+            }
+        }
+
+        for(let i = 0; i < this.persistent_circles.length; i++)
+        {
+            let circle = this.persistent_circles[i]
+
+            this.draw_debug_circle(circle.center, circle.radius, circle.style, circle.width, -1)
+
+            circle.seconds_left -= delta_seconds
+
+            if(circle.seconds_left <= 0)
+            {
+                this.persistent_circles.splice(i, 1)
                 i--
             }
         }
@@ -68,6 +96,21 @@ class DebugUtils
         
         let points = [left_top, right_top, right_bottom, left_bottom]
         this.draw_debug_shape(points, style, width, persistance_seconds)
+    }
+
+    draw_debug_circle(center, radius, style, width, persistance_seconds=-1)
+    {
+        if(persistance_seconds == -1)
+        {
+            draw_circle(this.ctx, center, radius, style, width)
+        }
+        else
+        {
+            this.draw_debug_circle(center, radius, style, width, -1)
+
+            let circle = new PersistentDebugCircle(center, radius, style, width, persistance_seconds)
+            this.persistent_circles.push(circle)
+        }
     }
 
 }
