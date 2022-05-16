@@ -22,9 +22,9 @@ class Circle
 
     intersects_circle(circle)
     {
-        let vec = Vector2D.subv(this.center, shape.center)
+        let vec = Vector2D.subv(this.center, circle.center)
         let distance_sqr = vec.length_sqr
-        let instersection_distance = this.radius + shape.radius
+        let instersection_distance = this.radius + circle.radius
         let instersection_distance_sqr = instersection_distance * instersection_distance
 
         return distance_sqr < instersection_distance_sqr

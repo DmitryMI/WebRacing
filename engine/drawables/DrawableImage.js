@@ -11,6 +11,7 @@ class DrawableImage extends Drawable
         this._alpha = 1
 
         this.scale = Vector2D.identity()      
+        this.default_rotation = 0
     }
 
     get alpha()
@@ -23,9 +24,16 @@ class DrawableImage extends Drawable
         this._alpha = value
     }
 
+    set_image_default_rotation(value)
+    {
+        this.default_rotation = value
+    }
+
     render(ctx)
     {
         super.render(ctx)
+
+        let rot = this.rotation + this.default_rotation
 
         let x = this.location.x
         let y = this.location.y     
@@ -37,7 +45,7 @@ class DrawableImage extends Drawable
         let yShifted = y - height / 2      
         
         ctx.translate(this.location.x, this.location.y)
-        ctx.rotate(this.rotation)
+        ctx.rotate(rot)
         ctx.translate(-this.location.x, -this.location.y)
 
         ctx.globalAlpha = this.alpha;       
@@ -45,7 +53,7 @@ class DrawableImage extends Drawable
         ctx.globalAlpha = 1.0;
         
         ctx.translate(this.location.x, this.location.y)
-        ctx.rotate(-this.rotation)
+        ctx.rotate(-rot)
         ctx.translate(-this.location.x, -this.location.y)        
     }
 }

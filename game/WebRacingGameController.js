@@ -17,7 +17,8 @@ class WebRacingGameController extends GameController
         this.obstacle_generators = [
             new RandomObstacleGenerator(Obstacle, this, 0),
             new NarrowPassageGenerator(Obstacle, this, 0),
-            new ZigZackGenerator(Obstacle, this, 0)
+            new ZigZackGenerator(Obstacle, this, 0),
+            new PoliceGenerator(this, 0)
         ]
 
         this.current_obstacle_generator = null
@@ -51,11 +52,11 @@ class WebRacingGameController extends GameController
 
     get obstacle_lifebox()
     {
-        let min_x = this.road_center.x - this.road_size.x
-        let max_x = this.road_center.x + this.road_size.x
+        let min_x = this.road_center.x - this.road_size.x * 2
+        let max_x = this.road_center.x + this.road_size.x * 2
 
         let min_y = -1000
-        let max_y = this.road_size.y + 500
+        let max_y = this.road_size.y + 1000
 
         return new Box(min_x, max_y, max_x, min_y)
     }

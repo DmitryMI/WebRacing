@@ -176,7 +176,7 @@ class Vector2D
     static random_unit_circle()
     {
        let unit = new Vector2D(1, 0)
-       angle = Math.random() * 2 * Math.PI
+       let angle = Math.random() * 2 * Math.PI
        unit.rotate(angle)
        return unit
     }
