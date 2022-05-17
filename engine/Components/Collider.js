@@ -8,7 +8,7 @@ class Collider extends ActorComponent
         this.collision_leave_event_handlers = []
         this.collision_stay_event_handlers = []
 
-        this.collider_debug_drawing = true
+        this.collider_debug_drawing = false
     }
 
     add_collision_stay_event_handler(handler)

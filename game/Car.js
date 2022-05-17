@@ -140,6 +140,15 @@ class Car extends Pawn
         super.begin_play()        
     }
 
+    deal_damage(damage)
+    {
+        this.health -= damage
+        if(this.health < 0)
+        {
+            this.health = 0
+        }
+    }
+
     on_collision_enter(other_collider)
     {       
         let other_pawn = other_collider.parent
@@ -161,7 +170,7 @@ class Car extends Pawn
 
         if(this.invincibility_timer <= 0)
         {
-            this.health -= damage
+            this.deal_damage(damage)
             this.invincibility_timer = this.invincibility_duration
         }
 
