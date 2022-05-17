@@ -4,6 +4,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>WebRacingServer</Name>
     <RootNamespace>WebRacingServer</RootNamespace>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -19,7 +20,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
     <NodejsPort>1337</NodejsPort>
-    <StartWebBrowser>true</StartWebBrowser>
+    <StartWebBrowser>False</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +32,58 @@
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="static\engine\Actor.js" />
+    <Content Include="static\engine\BouncingPawn.js" />
+    <Content Include="static\engine\CollisionResolver.js" />
+    <Content Include="static\engine\Components\ActorComponent.js" />
+    <Content Include="static\engine\Components\BoxCollider.js" />
+    <Content Include="static\engine\Components\CircleCollider.js" />
+    <Content Include="static\engine\Components\Collider.js" />
+    <Content Include="static\engine\drawables\Drawable.js" />
+    <Content Include="static\engine\drawables\DrawableImage.js" />
+    <Content Include="static\engine\drawables\DrawableShape.js" />
+    <Content Include="static\engine\GameController.js" />
+    <Content Include="static\engine\GameInstance.js" />
+    <Content Include="static\engine\Input.js" />
+    <Content Include="static\engine\Pawn.js" />
+    <Content Include="static\engine\Renderer.js" />
+    <Content Include="static\engine\utils\ArrayUtils.js" />
+    <Content Include="static\engine\utils\Box.js" />
+    <Content Include="static\engine\utils\CanvasDrawingUtils.js" />
+    <Content Include="static\engine\utils\Circle.js" />
+    <Content Include="static\engine\utils\DebugUtils.js" />
+    <Content Include="static\engine\utils\MathUtils.js" />
+    <Content Include="static\engine\utils\RandomUtils.js" />
+    <Content Include="static\engine\Vector2D.js" />
+    <Content Include="static\game\Car.js" />
+    <Content Include="static\game\drawables\RoadAnimationDrawable.js" />
+    <Content Include="static\game\Obstacle.js" />
+    <Content Include="static\game\obstacle_generators\NarrowPassageGenerator.js" />
+    <Content Include="static\game\obstacle_generators\ObstacleGenerator.js" />
+    <Content Include="static\game\obstacle_generators\PoliceGenerator.js" />
+    <Content Include="static\game\obstacle_generators\RandomObstacleGenerator.js" />
+    <Content Include="static\game\obstacle_generators\ZigZackGenerator.js" />
+    <Content Include="static\game\Police.js" />
+    <Content Include="static\game\RoadAnimator.js" />
+    <Content Include="static\game\SmokeParticle.js" />
+    <Content Include="static\game\WebRacingGameController.js" />
+    <Content Include="static\images\Barricade.png" />
+    <Content Include="static\images\Car.png" />
+    <Content Include="static\images\Police.png" />
+    <Content Include="static\images\SmokeParticle.png" />
+    <Content Include="static\index.html" />
+    <Content Include="static\main.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="static\" />
+    <Folder Include="static\engine\" />
+    <Folder Include="static\engine\Components\" />
+    <Folder Include="static\engine\drawables\" />
+    <Folder Include="static\engine\utils\" />
+    <Folder Include="static\game\" />
+    <Folder Include="static\game\drawables\" />
+    <Folder Include="static\game\obstacle_generators\" />
+    <Folder Include="static\images\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>
