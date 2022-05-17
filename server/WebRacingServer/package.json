@@ -1,0 +1,9 @@
+{
+  "name": "web-racing-server",
+  "version": "0.0.0",
+  "description": "WebRacingServer",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  }
+}
