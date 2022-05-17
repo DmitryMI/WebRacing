@@ -6,6 +6,7 @@ class WebRacingGameController extends GameController
         
         this.canvas = document.getElementById("scene_canvas")
         this.score_element = document.getElementById("score")
+        this.health_element = document.getElementById("health")
         this.road_width_fraction = 0.8
         this.play_time = 0
 
@@ -23,6 +24,11 @@ class WebRacingGameController extends GameController
 
         this.current_obstacle_generator = null
     }    
+
+    static get difficulty_limit_seconds()
+    {
+        return 300
+    }
 
     static get road_vertical_speed()
     {
@@ -118,10 +124,14 @@ class WebRacingGameController extends GameController
 
     report_car_collision(other_collider)
     {
-        console.log("Collision with " + other_collider.parent.name)
-
-        // TODO Game Over
-        //this.game_instance.stop_tick()
+        //console.log("Collision with " + other_collider.parent.name)
+        let health = this.car.health
+        this.health_element.innerHTML = health.toFixed(1)
+        if(health <= 0)
+        {
+            // TODO Game Over
+            this.game_instance.stop_tick()
+        }
     }
 
 }

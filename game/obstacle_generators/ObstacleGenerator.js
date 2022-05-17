@@ -23,6 +23,7 @@ class ObstacleGenerator
         this.game_controller.game_instance.spawn(obstacle)
 
         this.obstacle_counter++
+        return obstacle
     }
 
     update(play_time, delta_seconds)

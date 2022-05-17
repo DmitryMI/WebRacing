@@ -22,6 +22,8 @@ class Police extends Pawn
         this.life_box = life_box
 
         this.is_alive = true
+
+        this.on_death_event_handler = null
     }
 
     static image_instance = null
@@ -115,7 +117,7 @@ class Police extends Pawn
 
     on_collision_enter(other_collider)
     {       
-        this.is_alive = false
+        this.is_alive = false        
     }
 
     spawn_smoke_at(spawn_offset)
@@ -173,7 +175,11 @@ class Police extends Pawn
 
         if(!this.life_box.contains_point(this.location))
         {            
-            console.log(this.name + " entered kill zone")
+            //console.log(this.name + " entered kill zone")
+            if(this.on_death_event_handler != null)
+            {
+                this.on_death_event_handler(this)
+            }
             this.destroy()
         }
     }

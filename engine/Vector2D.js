@@ -87,6 +87,19 @@ class Vector2D
         return new Vector2D(x, y)
     }
 
+    static dot(a, b)
+    {
+        let sum = a.x * b.x + a.y * b.y
+        return sum
+    }
+
+    static get_unit_vector_from_rotation(rotation)
+    {
+        let vec = Vector2D.right()
+        vec.rotate(rotation)
+        return vec
+    }
+
     normalize()
     {
         let length = this.size
@@ -152,6 +165,21 @@ class Vector2D
     static zero()
     {
         return new Vector2D(0, 0)
+    }
+
+    static up()
+    {
+        return new Vector2D(0, 1)
+    }
+
+    static down()
+    {
+        return new Vector2D(0, -1)
+    }
+
+    static right()
+    {
+        return new Vector2D(1, 0)
     }
 
     static identity()

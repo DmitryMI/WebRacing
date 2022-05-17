@@ -14,9 +14,21 @@ class Pawn extends Actor
         return this._rotation
     }
 
+    get forward()
+    {
+        return Vector2D.get_unit_vector_from_rotation(this.rotation)
+    }
+
     set rotation(value)
     {
         this._rotation = unwind_angle(value)
+    }
+
+    draw_debug_forward()
+    {
+        let forward = Vector2D.multf(this.forward, 100)
+        let forward_step = Vector2D.addv(this.location, forward)
+        this.debug_utils?.draw_debug_line(this.location, forward_step, "#00FF00", 1)
     }
 
     begin_play()

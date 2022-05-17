@@ -17,7 +17,16 @@ class Car extends Pawn
 
         this.smoke_spawn_period = 0.01
 
+        this.health = 100
+
         this.next_smoke_particle_time = this.smoke_spawn_period
+
+        this.invincibility_timer = 0
+        this.invincibility_duration = 1.0
+
+        this.flicker = 1
+        this.flicker_timer = 0
+        this.flicker_period = 0.05
     }
 
     static image_instance = null
@@ -133,6 +142,29 @@ class Car extends Pawn
 
     on_collision_enter(other_collider)
     {       
+        let other_pawn = other_collider.parent
+        let hit_direction = Vector2D.subv(other_pawn.location, this.location)
+        hit_direction.normalize()
+
+        let car_forward = this.forward    
+        
+        // -1 means read hit, 0 is side hit, 1 means forward hit
+        let hit_direction_dot = Vector2D.dot(car_forward, hit_direction)
+
+        // 0 means read hit, 0.5 is side hit, 1 means forward hit
+        let hit_direction_dot_normalized = (hit_direction_dot + 1) / 2
+
+        let max_damage = 50
+        let min_damage = 10
+
+        let damage = lerp(min_damage, max_damage, hit_direction_dot_normalized)
+
+        if(this.invincibility_timer <= 0)
+        {
+            this.health -= damage
+            this.invincibility_timer = this.invincibility_duration
+        }
+
         this.game_instance.game_controller.report_car_collision(other_collider)
     }
 
@@ -165,11 +197,26 @@ class Car extends Pawn
         this.spawn_smoke_at(right_spawn_offset)       
     }
 
+    update_flicker(delta_seconds)
+    {
+        if(this.flicker_timer <= 0)
+        {
+            this.flicker = -this.flicker
+            this.flicker_timer = this.flicker_period
+        }
+        else
+        {
+            this.flicker_timer -= delta_seconds
+        }
+    }
+
     tick(delta_seconds)
     {
         super.tick(delta_seconds)
 
         this.follow_mouse(delta_seconds)
+
+        this.update_flicker(delta_seconds)
 
         if(this.next_smoke_particle_time <= 0)
         {
@@ -179,11 +226,25 @@ class Car extends Pawn
         else
         {
             this.next_smoke_particle_time -= delta_seconds
-        }        
+        }      
+        
+        if(this.invincibility_timer > 0)
+        {
+            this.invincibility_timer -= delta_seconds
+        }
     }
 
     render(canvas_rendering_context, delta_time)
     {
+        if(this.invincibility_timer > 0)
+        {
+            this.drawable.alpha = 1 - (this.flicker + 1) / 3
+        }
+        else
+        {
+            this.drawable.alpha = 1
+        }
+
         super.render(canvas_rendering_context, delta_time)
     }
 }

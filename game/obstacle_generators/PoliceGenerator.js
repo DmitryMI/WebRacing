@@ -5,6 +5,8 @@ class PoliceGenerator extends ObstacleGenerator
         super(Police, game_controller)
 
         this.duration = duration
+
+        this.alive_police_cars = 0
     }
 
     get generator_name()
@@ -22,22 +24,17 @@ class PoliceGenerator extends ObstacleGenerator
         return this.duration <= 0
     }
 
-    get obstacle_spawn_chance_maximum()
+    get_target_alive_police_cars(play_time)
     {
-        return 5
-    }
-
-    get obstacle_spawn_chance_slope()
-    {
-        return 0.01
-    }
-
-    get_obstacle_spawn_chance(time)
-    {
-        let max = this.obstacle_spawn_chance_maximum
-        let slope = this.obstacle_spawn_chance_slope
-        let chance = max * (1 - Math.pow(Math.E, -slope * time))
-        return chance
+        let max = 6
+        let min = 2
+        let limit_time = WebRacingGameController.difficulty_limit_seconds
+        let count = (max - min) * play_time / limit_time + min
+        if(count > max)
+        {
+            return max
+        }
+        return Math.floor(count)
     }
 
     spawn_police()
@@ -48,20 +45,30 @@ class PoliceGenerator extends ObstacleGenerator
         location = Vector2D.multf(location, 1.5)
         let velocity = new Vector2D(0, 0)
 
-        this.spawn_obstacle("Police", location, velocity)
+        let police = this.spawn_obstacle("Police", location, velocity)        
+
+        police.on_death_event_handler = (police) => {this.on_police_death(police)}
+
+        this.alive_police_cars++
+    }
+
+    on_police_death(police)
+    {
+        this.alive_police_cars--
+        console.log(`${police.name} died! There are ${this.alive_police_cars} police cars left`)
     }
 
     update(play_time, delta_seconds)
     {
         super.update(play_time, delta_seconds)
 
-        let chance_base = this.get_obstacle_spawn_chance(play_time)
-        //console.log(chance_base)
-        let obstacle_spawn_chance = chance_base * delta_seconds
-        let will_spawn = random_bool_weighted(obstacle_spawn_chance)
+        let max_cars = this.get_target_alive_police_cars(play_time)
+
+        let will_spawn = this.alive_police_cars < this.get_target_alive_police_cars(play_time)
         if(will_spawn)
         {
             this.spawn_police()
+            console.log(`Spawned ${this.alive_police_cars}/${max_cars} police cars`)
         }
 
         this.duration -= delta_seconds
